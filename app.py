@@ -8,7 +8,7 @@ cors = CORS(app)
 @app.route('/api')
 @cross_origin()
 def Hello():
-    return jsonify("Hello World!!!!!!!!!")
+    return jsonify("Hello World")
 
 
 @app.route('/')
