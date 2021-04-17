@@ -49,3 +49,9 @@ class Pydoku:
     def get_previous_in_col(self, coords):
         x, y = coords
         return self.raw_board[:y, x]
+
+    def get_col_available_numbers(self, coords, current_number):
+        sector = self.find_sector(coords)
+        position_in_sector = np.where(sector == current_number)
+        col_in_sector = position_in_sector[0][0]
+        return sector[col_in_sector + 1:]
