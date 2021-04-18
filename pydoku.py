@@ -1,6 +1,18 @@
 import numpy as np
 from random import sample
 
+test_board = np.array([[5, 9, 6, 5, 8, 3, 8, 1, 3],
+                       [1, 4, 3, 1, 4, 9, 9, 2, 7],
+                       [8, 2, 7, 7, 2, 6, 4, 5, 6],
+                       [4, 3, 9, 6, 3, 7, 4, 1, 6],
+                       [5, 1, 7, 9, 4, 1, 8, 9, 7],
+                       [8, 6, 2, 5, 8, 2, 3, 2, 5],
+                       [7, 3, 6, 6, 2, 7, 9, 2, 5],
+                       [9, 8, 5, 8, 3, 4, 7, 8, 1],
+                       [2, 4, 1, 5, 1, 9, 3, 4, 6]])
+
+# print('test board', test_board)
+
 
 class Pydoku:
     def __init__(self):
@@ -15,14 +27,9 @@ class Pydoku:
             (6, 9, 3, 6),
             (6, 9, 6, 9)
         ]
-        self.raw_board = self.populate_board()
-        # x = 4
-        # y = 2
+        # self.raw_board = self.populate_board()
+        self.raw_board = test_board
         print(self.raw_board)
-        # print(self.raw_board[y][x])
-        # sector = self.find_sector((x, y))
-        # print(sector)
-        # print(self.get_previous_in_row((x, y)))
 
     def get_shuffled_list(self):
         numbers = list(range(1, 10))

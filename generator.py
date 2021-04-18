@@ -5,8 +5,7 @@ from pydoku import Pydoku
 class Generator:
     def __init__(self):
         self.pydoku = Pydoku()
-        # self.iterate_rows(0)
-        self.iterate_cols(0)
+        self.iterator(0)
         print(self.pydoku.raw_board)
 
     def iterate_rows(self, y):
@@ -20,12 +19,15 @@ class Generator:
 
                 available_row, available_col = np.where(np.isin(available_numbers,
                                                                 previous_in_row, invert=True))
-                print('available', available_row[0], available_col[0])
-                swap_number = available_numbers[available_row[0]
-                                                ][available_col[0]]
-                self.pydoku.raw_board[y][x] = swap_number
-                available_numbers[available_row[0]
-                                  ][available_col[0]] = current_number
+
+                if len(available_row) == 0 | len(available_col) == 0:
+                    print('row swap')
+                else:
+                    swap_number = available_numbers[available_row[0]
+                                                    ][available_col[0]]
+                    self.pydoku.raw_board[y][x] = swap_number
+                    available_numbers[available_row[0]
+                                      ][available_col[0]] = current_number
 
     def iterate_cols(self, x):
         for y in range(x, 9):
@@ -38,16 +40,24 @@ class Generator:
 
                 available_row, available_col = np.where(np.isin(available_numbers,
                                                                 previous_in_col, invert=True))
-                print('available', available_row[0], available_col[0])
-                swap_number = available_numbers[available_row[0]
-                                                ][available_col[0]]
-                self.pydoku.raw_board[y][x] = swap_number
-                available_numbers[available_row[0]
-                                  ][available_col[0]] = current_number
 
-    # def iterator(self, start):
-    #     if start > 7:
-    #         return
+                if len(available_row) == 0 | len(available_col) == 0:
+                    print('col swap')
+                else:
+                    swap_number = available_numbers[available_row[0]
+                                                    ][available_col[0]]
+                    self.pydoku.raw_board[y][x] = swap_number
+                    available_numbers[available_row[0]
+                                      ][available_col[0]] = current_number
+
+    def iterator(self, start):
+        if start > 1:
+            return
+
+        self.iterate_rows(start)
+        self.iterate_cols(start)
+
+        self.iterator(start + 1)
 
 
 Generator()
