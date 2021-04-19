@@ -11,8 +11,6 @@ test_board = np.array([[5, 9, 6, 5, 8, 3, 8, 1, 3],
                        [9, 8, 5, 8, 3, 4, 7, 8, 1],
                        [2, 4, 1, 5, 1, 9, 3, 4, 6]])
 
-# print('test board', test_board)
-
 
 class Pydoku:
     def __init__(self):
