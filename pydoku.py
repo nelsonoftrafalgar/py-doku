@@ -1,15 +1,15 @@
 import numpy as np
 from random import sample
 
-test_board = np.array([[5, 9, 6, 5, 8, 3, 8, 1, 3],
-                       [1, 4, 3, 1, 4, 9, 9, 2, 7],
-                       [8, 2, 7, 7, 2, 6, 4, 5, 6],
-                       [4, 3, 9, 6, 3, 7, 4, 1, 6],
-                       [5, 1, 7, 9, 4, 1, 8, 9, 7],
-                       [8, 6, 2, 5, 8, 2, 3, 2, 5],
-                       [7, 3, 6, 6, 2, 7, 9, 2, 5],
-                       [9, 8, 5, 8, 3, 4, 7, 8, 1],
-                       [2, 4, 1, 5, 1, 9, 3, 4, 6]])
+test_board = np.array([[8, 4, 2, 4, 2, 3, 9, 8, 3],
+                       [5, 1, 6, 7, 5, 1, 1, 6, 7],
+                       [9, 3, 7, 6, 9, 8, 4, 2, 5],
+                       [5, 2, 4, 2, 9, 1, 1, 8, 9],
+                       [8, 7, 6, 3, 4, 8, 2, 7, 3],
+                       [3, 9, 1, 7, 5, 6, 5, 4, 6],
+                       [4, 5, 8, 3, 2, 7, 8, 7, 2],
+                       [1, 7, 2, 5, 6, 8, 6, 1, 5],
+                       [3, 9, 6, 9, 1, 4, 3, 4, 9]])
 
 
 class Pydoku:
@@ -66,3 +66,17 @@ class Pydoku:
         position_in_sector = np.where(sector == current_number)
         col_in_sector = position_in_sector[1][0]
         return sector[:, col_in_sector + 1:]
+
+    def get_unavailable_for_row(self, x, y):
+        if (y == 4 and (x == 4 or x == 5)) or (y == 7 and (x == 7 or x == 8)):
+            return 1
+        else:
+            return 0
+
+    def get_unavailable_for_col(self, x, y):
+        if (x == 3 and (y == 4 or y == 5)) or (x == 6 and (y == 7 or y == 8)):
+            return 1
+        elif (x == 4 and (y == 5)) or (x == 7 and (y == 8)):
+            return 2
+        else:
+            return 0
