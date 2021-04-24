@@ -7,10 +7,6 @@ class Generator:
     def __init__(self):
         self.pydoku = Pydoku()
         self.validator = Validator()
-        self.iterator(0)
-        is_valid = self.validator.validate_board(self.pydoku.raw_board)
-        print(self.pydoku.raw_board)
-        print('is_valid', is_valid)
 
     def iterate_rows(self, y):
         for x in range(9):
@@ -19,13 +15,13 @@ class Generator:
 
             if current_number in previous_in_row:
                 if y > x:
-                    next_in_col = self.pydoku.raw_board[y:, x:x+1]
-                    available_numbers = next_in_col[~np.in1d(
-                        next_in_col, previous_in_row)]
+                    adjacent = self.pydoku.raw_board[y:, x:x+1][0]
+                    available_numbers = adjacent[~np.in1d(
+                        adjacent, previous_in_row)]
                     if len(available_numbers) > 0:
                         swap_position = np.argwhere(
-                            next_in_col == available_numbers[0])[0][0]
-                        next_in_col[swap_position][0], next_in_col[0] = next_in_col[0], next_in_col[swap_position][0]
+                            adjacent == available_numbers[0])
+                        adjacent[swap_position][0], adjacent[0] = adjacent[0], adjacent[swap_position][0]
                     else:
                         self.handle_row_swap(y, x, current_number)
                 else:
@@ -35,13 +31,10 @@ class Generator:
                     numbers = available_numbers[:, unavailable:]
                     row, col = np.where(
                         np.isin(numbers, previous_in_row, invert=True))
-
                     if len(row) == 0 or len(col) == 0:
                         self.handle_row_swap(y, x, current_number)
                     else:
-                        swap_number = numbers[row[0]][col[0]]
-                        self.pydoku.raw_board[y][x] = swap_number
-                        numbers[row[0]][col[0]] = current_number
+                        self.handle_single_swap(numbers, row, col, x, y)
 
     def iterate_cols(self, x):
         for y in range(9):
@@ -50,13 +43,13 @@ class Generator:
 
             if current_number in previous_in_col:
                 if x >= y:
-                    next_in_row = self.pydoku.raw_board[y:y+1, x:][0]
-                    available_numbers = next_in_row[~np.in1d(
-                        next_in_row, previous_in_col)]
+                    adjacent = self.pydoku.raw_board[y:y+1, x:][0]
+                    available_numbers = adjacent[~np.in1d(
+                        adjacent, previous_in_col)]
                     if len(available_numbers) > 0:
                         swap_position = np.argwhere(
-                            next_in_row == available_numbers[0])
-                        next_in_row[swap_position], next_in_row[0] = next_in_row[0], next_in_row[swap_position]
+                            adjacent == available_numbers[0])
+                        adjacent[swap_position], adjacent[0] = adjacent[0], adjacent[swap_position]
                     else:
                         self.handle_col_swap(y, x, current_number)
                 else:
@@ -69,9 +62,7 @@ class Generator:
                     if len(row) == 0 or len(col) == 0:
                         self.handle_col_swap(y, x, current_number)
                     else:
-                        swap_number = numbers[row[0]][col[0]]
-                        self.pydoku.raw_board[y][x] = swap_number
-                        numbers[row[0]][col[0]] = current_number
+                        self.handle_single_swap(numbers, row, col, x, y)
 
     def iterator(self, start):
         if start > 8:
@@ -80,6 +71,10 @@ class Generator:
         self.iterate_rows(start)
         self.iterate_cols(start)
         self.iterator(start + 1)
+
+    def handle_single_swap(self, numbers, row, col, x, y):
+        self.pydoku.raw_board[y][x], numbers[row[0]][col[0]
+                                                     ] = numbers[row[0]][col[0]], self.pydoku.raw_board[y][x]
 
     def handle_row_swap(self, y, x, current_number):
         swap_matrix = self.pydoku.raw_board[y:y+2, :x]
@@ -127,5 +122,17 @@ class Generator:
         swap_cols(swap_row)
         self.pydoku.raw_board[:y, x:x+2] = swap_matrix
 
+    def generate_valid_board(self):
+        is_valid = self.validator.validate_board(self.pydoku.raw_board)
 
-Generator()
+        while not is_valid:
+            self.pydoku = Pydoku()
+            self.iterator(0)
+            is_valid = self.validator.validate_board(self.pydoku.raw_board)
+
+        print(self.pydoku.raw_board)
+        print('is_valid', is_valid)
+
+
+generator = Generator()
+generator.generate_valid_board()
