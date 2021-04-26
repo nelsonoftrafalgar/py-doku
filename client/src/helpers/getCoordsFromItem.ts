@@ -1,0 +1,1 @@
+export const getCoordsFromItem = (item: string) => item.split('').map((el) => +el)

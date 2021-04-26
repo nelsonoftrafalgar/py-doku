@@ -1,0 +1,1 @@
+export const deepCopy = (arr: any[]) => arr.map((sub) => sub.slice())

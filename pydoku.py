@@ -1,15 +1,15 @@
 import numpy as np
 from random import sample
 
-test_board = np.array([[6, 7, 2, 2, 8, 1, 6, 1, 2],
-                       [5, 9, 4, 4, 6, 5, 9, 4, 8],
-                       [1, 3, 8, 3, 9, 7, 7, 5, 3],
-                       [5, 6, 8, 5, 7, 1, 4, 5, 6],
-                       [9, 7, 4, 9, 6, 4, 7, 2, 3],
-                       [3, 2, 1, 3, 2, 8, 8, 9, 1],
-                       [6, 2, 7, 8, 3, 2, 4, 6, 1],
-                       [3, 9, 5, 4, 5, 7, 2, 3, 8],
-                       [1, 8, 4, 1, 6, 9, 9, 7, 5]])
+# test_board = np.array([[6, 7, 2, 2, 8, 1, 6, 1, 2],
+#                        [5, 9, 4, 4, 6, 5, 9, 4, 8],
+#                        [1, 3, 8, 3, 9, 7, 7, 5, 3],
+#                        [5, 6, 8, 5, 7, 1, 4, 5, 6],
+#                        [9, 7, 4, 9, 6, 4, 7, 2, 3],
+#                        [3, 2, 1, 3, 2, 8, 8, 9, 1],
+#                        [6, 2, 7, 8, 3, 2, 4, 6, 1],
+#                        [3, 9, 5, 4, 5, 7, 2, 3, 8],
+#                        [1, 8, 4, 1, 6, 9, 9, 7, 5]])
 
 
 class Pydoku:
@@ -27,7 +27,7 @@ class Pydoku:
         ]
         self.raw_board = self.populate_board()
         # self.raw_board = test_board
-        print(self.raw_board)
+        # print(self.raw_board)
 
     def get_shuffled_list(self):
         numbers = list(range(1, 10))

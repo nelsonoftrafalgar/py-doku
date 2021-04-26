@@ -15,15 +15,8 @@ class Generator:
 
             if current_number in previous_in_row:
                 if y > x:
-                    adjacent = self.pydoku.raw_board[y:, x:x+1][0]
-                    available_numbers = adjacent[~np.in1d(
-                        adjacent, previous_in_row)]
-                    if len(available_numbers) > 0:
-                        swap_position = np.argwhere(
-                            adjacent == available_numbers[0])
-                        adjacent[swap_position][0], adjacent[0] = adjacent[0], adjacent[swap_position][0]
-                    else:
-                        self.handle_row_swap(y, x, current_number)
+                    self.handle_sorted_col_swap(
+                        x, y, previous_in_row, current_number)
                 else:
                     available_numbers = self.pydoku.get_row_available_numbers(
                         (x, y), current_number)
@@ -43,15 +36,8 @@ class Generator:
 
             if current_number in previous_in_col:
                 if x >= y:
-                    adjacent = self.pydoku.raw_board[y:y+1, x:][0]
-                    available_numbers = adjacent[~np.in1d(
-                        adjacent, previous_in_col)]
-                    if len(available_numbers) > 0:
-                        swap_position = np.argwhere(
-                            adjacent == available_numbers[0])
-                        adjacent[swap_position], adjacent[0] = adjacent[0], adjacent[swap_position]
-                    else:
-                        self.handle_col_swap(y, x, current_number)
+                    self.handle_sorted_row_swap(
+                        x, y, previous_in_col, current_number)
                 else:
                     available_numbers = self.pydoku.get_col_available_numbers(
                         (x, y), current_number)
@@ -71,6 +57,28 @@ class Generator:
         self.iterate_rows(start)
         self.iterate_cols(start)
         self.iterator(start + 1)
+
+    def handle_sorted_col_swap(self, x, y, previous_in_row, current_number):
+        adjacent = self.pydoku.raw_board[y:, x:x+1][0]
+        available_numbers = adjacent[~np.in1d(
+            adjacent, previous_in_row)]
+        if len(available_numbers) > 0:
+            swap_position = np.argwhere(
+                adjacent == available_numbers[0])
+            adjacent[swap_position][0], adjacent[0] = adjacent[0], adjacent[swap_position][0]
+        else:
+            self.handle_row_swap(y, x, current_number)
+
+    def handle_sorted_row_swap(self, x, y, previous_in_col, current_number):
+        adjacent = self.pydoku.raw_board[y:y+1, x:][0]
+        available_numbers = adjacent[~np.in1d(
+            adjacent, previous_in_col)]
+        if len(available_numbers) > 0:
+            swap_position = np.argwhere(
+                adjacent == available_numbers[0])
+            adjacent[swap_position], adjacent[0] = adjacent[0], adjacent[swap_position]
+        else:
+            self.handle_col_swap(y, x, current_number)
 
     def handle_single_swap(self, numbers, row, col, x, y):
         self.pydoku.raw_board[y][x], numbers[row[0]][col[0]
@@ -130,9 +138,8 @@ class Generator:
             self.iterator(0)
             is_valid = self.validator.validate_board(self.pydoku.raw_board)
 
-        print(self.pydoku.raw_board)
-        print('is_valid', is_valid)
+        return self.pydoku.raw_board
 
 
-generator = Generator()
-generator.generate_valid_board()
+# generator = Generator()
+# generator.generate_valid_board()

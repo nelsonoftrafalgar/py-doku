@@ -1,15 +1,23 @@
-import { FC, useEffect, useState } from 'react'
+import Game from './containers/Game'
+import GlobalState from './containers/GlobalState'
+import { SectorValues } from './model'
+import { createGlobalStyle } from 'styled-components'
 
-const App: FC = () => {
-	const [response, setResponse] = useState('')
+const StyleReset = createGlobalStyle`
+  * {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  box-sizing: border-box;
+}`
 
-	useEffect(() => {
-		fetch('/api')
-			.then((res) => res.json())
-			.then((res) => setResponse(res))
-	}, [])
-
-	return <div>Cient resopnse: {response}</div>
+const App = () => {
+	return (
+		<>
+			<StyleReset />
+			<GlobalState render={(data: SectorValues[]) => <Game sectorsWithoutDuplicates={data} />} />
+		</>
+	)
 }
 
 export default App
