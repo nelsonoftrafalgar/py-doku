@@ -50,5 +50,5 @@ export interface IPayload {
 
 export interface IAction {
 	type: ActionType
-	payload?: IPayload
+	payload?: any
 }
