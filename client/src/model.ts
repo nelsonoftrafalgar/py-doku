@@ -3,24 +3,6 @@ export type GameBoard = (string | null)[][]
 export type SectorValues = (number | null)[]
 export type Break = () => void
 
-export interface ISectorProps {
-	values: SectorValues
-	keys: string[]
-}
-
-export interface ICellProps {
-	value: number | null
-	id: string
-}
-
-export interface IGameProps {
-	sectorsWithoutDuplicates: SectorValues[]
-}
-
-export interface IGlobalStateProps {
-	render: (data: SectorValues[]) => JSX.Element
-}
-
 export interface IGameContext {
 	showHints: boolean
 	hints: number[]

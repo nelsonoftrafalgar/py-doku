@@ -1,13 +1,16 @@
 import Hints from './Hints'
-import { IGameProps } from '../model'
 import Instructions from './Instructions'
-import React from 'react'
 import Reset from './Reset'
 import { Row } from '../grid'
 import Sector from './Sector'
+import { SectorValues } from '../model'
 import SelectLevel from './SelectLevel'
 import { sectors } from '../services/Sectors'
 import styled from 'styled-components'
+
+interface IProps {
+	sectorsWithoutDuplicates: SectorValues[]
+}
 
 const Container = styled.div`
 	width: 100%;
@@ -19,7 +22,7 @@ const Container = styled.div`
 	background: #dbf4fc;
 `
 
-const Game: React.FC<IGameProps> = ({ sectorsWithoutDuplicates }) => {
+const Game: React.FC<IProps> = ({ sectorsWithoutDuplicates }) => {
 	const renderSectors = sectorsWithoutDuplicates.map((sector, i) => {
 		return <Sector key={i} values={sector} keys={sectors[i]} />
 	})

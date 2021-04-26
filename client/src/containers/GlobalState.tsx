@@ -1,11 +1,15 @@
-import { IGlobalStateProps, SectorValues } from '../model'
-import React, { useEffect, useMemo, useReducer } from 'react'
+import { useEffect, useMemo, useReducer } from 'react'
 
 import { GameContext } from '../state/context'
 import { SET_BOARD } from '../state/actions'
+import { SectorValues } from '../model'
 import axios from 'axios'
 import { mapBoradToSectors } from '../services/Generator'
 import { reducer } from '../state/reducers'
+
+interface IProps {
+	render: (data: SectorValues[]) => JSX.Element
+}
 
 export const initialState = {
 	level: null,
@@ -14,7 +18,7 @@ export const initialState = {
 	hints: [],
 }
 
-const GlobalState: React.FC<IGlobalStateProps> = ({ render }) => {
+const GlobalState: React.FC<IProps> = ({ render }) => {
 	const [state, dispatch] = useReducer(reducer, initialState)
 
 	useEffect(() => {

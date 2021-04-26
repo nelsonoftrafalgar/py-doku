@@ -2,8 +2,12 @@ import { ANALYZE_BOARD, CLEAR_HINTS, UPDATE_BOARD } from '../state/actions'
 import React, { useContext, useEffect, useRef, useState } from 'react'
 
 import { GameContext } from '../state/context'
-import { ICellProps } from '../model'
 import styled from 'styled-components'
+
+interface IProps {
+	value: number | null
+	id: string
+}
 
 const CELL_COLORS: Record<number, string> = {
 	1: '#65b96e',
@@ -30,7 +34,7 @@ const Container = styled.div<{ color: string; background: string }>`
 	${({ background }) => `background: ${background}`};
 `
 
-const Cell: React.FC<ICellProps> = ({ value, id }) => {
+const Cell: React.FC<IProps> = ({ value, id }) => {
 	const { dispatch } = useContext(GameContext)
 	const [number, setNumber] = useState(0)
 	const initialRender = useRef(true)
