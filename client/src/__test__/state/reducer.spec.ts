@@ -1,14 +1,5 @@
-import {
-	ANALYZE_BOARD,
-	CLEAR_HINTS,
-	RESET_GAME,
-	SET_BOARD,
-	SET_LEVEL,
-	TOGGLE_HINTS,
-	UPDATE_BOARD,
-} from '../../state/actions'
+import { Action, ActionType } from '../../model'
 
-import { IAction } from '../../model'
 import { reducer } from '../../state/reducers'
 
 const initialBoard = [
@@ -23,36 +14,36 @@ const initialBoard = [
 	['5', null, '2', null, null, '3', '4', '9', '1'],
 ]
 
-const updateAction: IAction = {
-	type: UPDATE_BOARD,
+const updateAction: Action = {
+	type: ActionType.UPDATE_BOARD,
 	payload: { id: '61', value: 9 },
 }
 
-const toggleHintsAction: IAction = {
-	type: TOGGLE_HINTS,
+const toggleHintsAction: Action = {
+	type: ActionType.TOGGLE_HINTS,
 }
 
-const analyzeAction: IAction = {
-	type: ANALYZE_BOARD,
+const analyzeAction: Action = {
+	type: ActionType.ANALYZE_BOARD,
 	payload: { id: '32' },
 }
 
-const clearHintsAction: IAction = {
-	type: CLEAR_HINTS,
+const clearHintsAction: Action = {
+	type: ActionType.CLEAR_HINTS,
 }
 
-const setBoardAction: IAction = {
-	type: SET_BOARD,
-	payload: initialBoard,
+const setBoardAction: Action = {
+	type: ActionType.SET_BOARD,
+	payload: { data: initialBoard },
 }
 
-const setLevelAction: IAction = {
-	type: SET_LEVEL,
-	payload: '0.8',
+const setLevelAction: Action = {
+	type: ActionType.SET_LEVEL,
+	payload: { level: '0.8' },
 }
 
-const resetGameAction: IAction = {
-	type: RESET_GAME,
+const resetGameAction: Action = {
+	type: ActionType.RESET_GAME,
 }
 
 const initialState = {

@@ -1,6 +1,6 @@
-import { ANALYZE_BOARD, CLEAR_HINTS, UPDATE_BOARD } from '../state/actions'
 import React, { useContext, useEffect, useRef, useState } from 'react'
 
+import { ActionType } from '../model'
 import { GameContext } from '../state/context'
 import styled from 'styled-components'
 
@@ -42,7 +42,7 @@ const Cell: React.FC<IProps> = ({ value, id }) => {
 
 	useEffect(() => {
 		if (!initialRender.current) {
-			dispatch({ type: UPDATE_BOARD, payload: { id, value: number } })
+			dispatch({ type: ActionType.UPDATE_BOARD, payload: { id, value: number } })
 		}
 		initialRender.current = false
 	}, [number, dispatch, id])
@@ -59,13 +59,13 @@ const Cell: React.FC<IProps> = ({ value, id }) => {
 
 	const handleAnalyzeBoard = () => {
 		if (!value && !number) {
-			dispatch({ type: ANALYZE_BOARD, payload: { id } })
+			dispatch({ type: ActionType.ANALYZE_BOARD, payload: { id } })
 		}
 	}
 
 	const handleClearHints = () => {
 		if (!value) {
-			dispatch({ type: CLEAR_HINTS })
+			dispatch({ type: ActionType.CLEAR_HINTS })
 		}
 	}
 

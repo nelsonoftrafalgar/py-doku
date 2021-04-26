@@ -1,5 +1,5 @@
+import { ActionType } from '../model'
 import { GameContext } from '../state/context'
-import { TOGGLE_HINTS } from '../state/actions'
 import styled from 'styled-components'
 import { useContext } from 'react'
 
@@ -42,7 +42,7 @@ const HintsStatus = styled.span<{ color: string }>`
 const Hints = () => {
 	const { dispatch, showHints, hints } = useContext(GameContext)
 	const handleSwitch = () => {
-		dispatch({ type: TOGGLE_HINTS })
+		dispatch({ type: ActionType.TOGGLE_HINTS })
 	}
 
 	return (

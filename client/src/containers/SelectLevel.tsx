@@ -1,7 +1,7 @@
 import { useContext, useState } from 'react'
 
+import { ActionType } from '../model'
 import { GameContext } from '../state/context'
-import { SET_LEVEL } from '../state/actions'
 import styled from 'styled-components'
 
 const Text = styled.span`
@@ -48,7 +48,9 @@ const SelectLevel = () => {
 					<option value='0.1'>killer</option>
 				</Select>
 			</SelectWrapper>
-			<Button onClick={() => dispatch({ type: SET_LEVEL, payload: level })}>Start game</Button>
+			<Button onClick={() => dispatch({ type: ActionType.SET_LEVEL, payload: { level } })}>
+				Start game
+			</Button>
 		</>
 	)
 }

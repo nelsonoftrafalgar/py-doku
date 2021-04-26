@@ -1,50 +1,41 @@
-import {
-	ANALYZE_BOARD,
-	CLEAR_HINTS,
-	RESET_GAME,
-	SET_BOARD,
-	SET_LEVEL,
-	TOGGLE_HINTS,
-	UPDATE_BOARD,
-} from './actions'
-import { IAction, IPayload, IState } from '../model'
+import { Action, ActionType, IState } from '../model'
 import { analyzeBoard, updateBoard } from '../services/Mechanics'
 
 import { initialState } from '../containers/GlobalState'
 
-export const reducer = (state: IState, action: IAction): IState => {
+export const reducer = (state: IState, action: Action): IState => {
 	switch (action.type) {
-		case UPDATE_BOARD:
+		case ActionType.UPDATE_BOARD:
 			return {
 				...state,
-				board: updateBoard(action.payload as IPayload, state.board),
+				board: updateBoard(action.payload, state.board),
 			}
-		case TOGGLE_HINTS:
+		case ActionType.TOGGLE_HINTS:
 			return {
 				...state,
 				showHints: !state.showHints,
 			}
-		case ANALYZE_BOARD:
+		case ActionType.ANALYZE_BOARD:
 			return {
 				...state,
-				hints: state.showHints ? analyzeBoard(action.payload as IPayload, state.board) : [],
+				hints: state.showHints ? analyzeBoard(action.payload, state.board) : [],
 			}
-		case CLEAR_HINTS:
+		case ActionType.CLEAR_HINTS:
 			return {
 				...state,
 				hints: [],
 			}
-		case SET_LEVEL:
+		case ActionType.SET_LEVEL:
 			return {
 				...state,
-				level: action.payload as any,
+				level: action.payload.level,
 			}
-		case SET_BOARD:
+		case ActionType.SET_BOARD:
 			return {
 				...state,
-				board: action.payload as any,
+				board: action.payload.data,
 			}
-		case RESET_GAME:
+		case ActionType.RESET_GAME:
 			return initialState
 		default:
 			return state

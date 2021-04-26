@@ -1,8 +1,7 @@
+import { ActionType, SectorValues } from '../model'
 import { useEffect, useMemo, useReducer } from 'react'
 
 import { GameContext } from '../state/context'
-import { SET_BOARD } from '../state/actions'
-import { SectorValues } from '../model'
 import axios from 'axios'
 import { mapBoradToSectors } from '../services/Generator'
 import { reducer } from '../state/reducers'
@@ -24,7 +23,7 @@ const GlobalState: React.FC<IProps> = ({ render }) => {
 	useEffect(() => {
 		state.level &&
 			axios.get('/api', { params: { level: state.level } }).then((res) => {
-				dispatch({ type: SET_BOARD, payload: res.data })
+				dispatch({ type: ActionType.SET_BOARD, payload: { data: res.data } })
 			})
 	}, [state.level])
 
