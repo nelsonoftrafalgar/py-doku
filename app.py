@@ -12,7 +12,8 @@ def Api():
     level = request.args.get('level')
     mask = Mask()
     board = mask.mask_board(float(level))
-    return jsonify(board)
+    response = jsonify(board)
+    return response
 
 
 @app.route('/')
@@ -21,4 +22,4 @@ def serve():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=True)
+    app.run(host='0.0.0.0')

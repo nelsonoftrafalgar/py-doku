@@ -29,14 +29,23 @@ export const reducer = (state: IState, action: Action): IState => {
 			return {
 				...state,
 				level: action.payload.level,
+				isFetchingBoard: true,
+				error: null,
 			}
 		case ActionType.SET_BOARD:
 			return {
 				...state,
 				board: action.payload.data,
+				isFetchingBoard: false,
 			}
 		case ActionType.RESET_GAME:
 			return initialState
+		case ActionType.SET_ERROR:
+			return {
+				...state,
+				error: action.payload.error,
+				isFetchingBoard: false,
+			}
 		default:
 			return state
 	}

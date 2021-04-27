@@ -32,8 +32,14 @@ const Select = styled.select`
 	padding: 5px;
 `
 
+const Error = styled.p`
+	font-family: sans-serif;
+	color: red;
+	margin-top: 30px;
+`
+
 const SelectLevel = () => {
-	const { dispatch } = useContext(GameContext)
+	const { dispatch, isFetchingBoard, error } = useContext(GameContext)
 	const [level, setLevel] = useState('0.6')
 	return (
 		<>
@@ -48,9 +54,13 @@ const SelectLevel = () => {
 					<option value='0.1'>killer</option>
 				</Select>
 			</SelectWrapper>
-			<Button onClick={() => dispatch({ type: ActionType.SET_LEVEL, payload: { level } })}>
-				Start game
+			<Button
+				disabled={isFetchingBoard}
+				onClick={() => dispatch({ type: ActionType.SET_LEVEL, payload: { level } })}
+			>
+				{isFetchingBoard ? 'Loading...' : 'Start game'}
 			</Button>
+			{error && <Error>{error}</Error>}
 		</>
 	)
 }

@@ -15,7 +15,7 @@ const App = () => {
 	return (
 		<>
 			<StyleReset />
-			<GlobalState render={(data: SectorValues[]) => <Game sectorsWithoutDuplicates={data} />} />
+			<GlobalState render={(data: SectorValues[]) => <Game data={data} />} />
 		</>
 	)
 }

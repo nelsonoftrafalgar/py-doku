@@ -9,7 +9,7 @@ import { sectors } from '../services/Sectors'
 import styled from 'styled-components'
 
 interface IProps {
-	sectorsWithoutDuplicates: SectorValues[]
+	data: SectorValues[]
 }
 
 const Container = styled.div`
@@ -22,14 +22,14 @@ const Container = styled.div`
 	background: #dbf4fc;
 `
 
-const Game: React.FC<IProps> = ({ sectorsWithoutDuplicates }) => {
-	const renderSectors = sectorsWithoutDuplicates.map((sector, i) => {
+const Game: React.FC<IProps> = ({ data }) => {
+	const renderSectors = data.map((sector, i) => {
 		return <Sector key={i} values={sector} keys={sectors[i]} />
 	})
 
 	return (
 		<Container>
-			{sectorsWithoutDuplicates.length === 0 ? (
+			{data.length === 0 ? (
 				<>
 					<Instructions />
 					<SelectLevel />

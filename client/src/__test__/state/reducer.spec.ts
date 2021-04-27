@@ -14,6 +14,15 @@ const initialBoard = [
 	['5', null, '2', null, null, '3', '4', '9', '1'],
 ]
 
+const initialState = {
+	level: null,
+	board: initialBoard,
+	showHints: false,
+	hints: [],
+	isFetchingBoard: false,
+	error: null,
+}
+
 const updateAction: Action = {
 	type: ActionType.UPDATE_BOARD,
 	payload: { id: '61', value: 9 },
@@ -46,11 +55,9 @@ const resetGameAction: Action = {
 	type: ActionType.RESET_GAME,
 }
 
-const initialState = {
-	level: null,
-	board: initialBoard,
-	showHints: false,
-	hints: [],
+const setErrorAction: Action = {
+	type: ActionType.SET_ERROR,
+	payload: { error: 'Test error' },
 }
 
 test('reducer updates state', () => {
@@ -72,22 +79,27 @@ test('reducer handles hints', () => {
 	expect(finalState.hints.length).toEqual(0)
 })
 
-test('reducer sets board', () => {
-	const { board } = reducer(
+test('reducer sets board and changes fetching state', () => {
+	const { board, isFetchingBoard } = reducer(
 		{
 			level: null,
 			board: [],
 			showHints: false,
 			hints: [],
+			isFetchingBoard: false,
+			error: null,
 		},
 		setBoardAction
 	)
 	expect(board).toHaveLength(9)
+	expect(isFetchingBoard).toBeFalsy()
 })
 
-test('reducer sets level', () => {
-	const { level } = reducer(initialState, setLevelAction)
+test('reducer sets level, clears error and changes fetching state', () => {
+	const { level, isFetchingBoard, error } = reducer(initialState, setLevelAction)
 	expect(level).toEqual('0.8')
+	expect(isFetchingBoard).toBeTruthy()
+	expect(error).toBeNull()
 })
 
 test('reducer clears state', () => {
@@ -97,5 +109,13 @@ test('reducer clears state', () => {
 		board: [],
 		showHints: false,
 		hints: [],
+		isFetchingBoard: false,
+		error: null,
 	})
+})
+
+test('reducer sets error and changes fetching state', () => {
+	const { error, isFetchingBoard } = reducer(initialState, setErrorAction)
+	expect(isFetchingBoard).toBeFalsy()
+	expect(error).toEqual('Test error')
 })

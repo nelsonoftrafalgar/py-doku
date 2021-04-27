@@ -15,6 +15,8 @@ export const initialState = {
 	board: [],
 	showHints: false,
 	hints: [],
+	isFetchingBoard: false,
+	error: null,
 }
 
 const GlobalState: React.FC<IProps> = ({ render }) => {
@@ -22,15 +24,25 @@ const GlobalState: React.FC<IProps> = ({ render }) => {
 
 	useEffect(() => {
 		state.level &&
-			axios.get('/api', { params: { level: state.level } }).then((res) => {
-				dispatch({ type: ActionType.SET_BOARD, payload: { data: res.data } })
-			})
+			axios
+				.get('/api', { params: { level: state.level } })
+				.then((res) => {
+					dispatch({ type: ActionType.SET_BOARD, payload: { data: res.data } })
+				})
+				.catch(() => {
+					dispatch({
+						type: ActionType.SET_ERROR,
+						payload: { error: 'Sorry, but an api error happend. Try again or refresh page.' },
+					})
+				})
 	}, [state.level])
 
 	const contextValue = {
 		showHints: state.showHints,
 		hints: state.hints,
 		dispatch,
+		isFetchingBoard: state.isFetchingBoard,
+		error: state.error,
 	}
 
 	const initilalBoard = useMemo(() => mapBoradToSectors(state.board), [state.board.length])
