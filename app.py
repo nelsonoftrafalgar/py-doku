@@ -1,5 +1,6 @@
-from flask import Flask, send_from_directory, jsonify
+from flask import Flask, send_from_directory, jsonify, request
 from flask_cors import CORS, cross_origin
+from mask import Mask
 
 app = Flask(__name__, static_folder='client/build', static_url_path='')
 cors = CORS(app)
@@ -7,8 +8,12 @@ cors = CORS(app)
 
 @app.route('/api')
 @cross_origin()
-def Hello():
-    return jsonify("Hello World")
+def Api():
+    level = request.args.get('level')
+    mask = Mask()
+    board = mask.mask_board(float(level))
+    response = jsonify(board)
+    return response
 
 
 @app.route('/')
