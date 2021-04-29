@@ -1,10 +1,8 @@
 # Pydoku
 
-## Server
-
+### Server
 Python, Flask, pytest
 
-## Client
-
+### Client
 React, TypeScript, Styled Components, Jest, RTL
 
