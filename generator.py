@@ -139,7 +139,3 @@ class Generator:
             is_valid = self.validator.validate_board(self.pydoku.raw_board)
 
         return self.pydoku.raw_board
-
-
-# generator = Generator()
-# generator.generate_valid_board()
