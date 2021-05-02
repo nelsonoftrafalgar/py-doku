@@ -1,93 +1,120 @@
 import pytest
 import numpy as np
-from py_doku.src import Pydoku
+from py_doku.src.pydoku import Pydoku
+from py_doku.src import TEST_BOARD
 
 
 @pytest.fixture
 def pydoku():
     pydoku = Pydoku()
-    pydoku.raw_board = np.array([[2, 6, 3, 1, 2, 4, 5, 6, 8],
-                                 [4, 9, 1, 5, 8, 9, 3, 4, 7],
-                                 [5, 8, 7, 7, 6, 3, 1, 2, 9],
-                                 [8, 5, 6, 5, 1, 3, 4, 1, 6],
-                                 [7, 3, 4, 6, 4, 9, 9, 2, 3],
-                                 [1, 9, 2, 2, 7, 8, 5, 7, 8],
-                                 [4, 8, 1, 9, 1, 6, 2, 6, 4],
-                                 [9, 6, 5, 3, 8, 4, 7, 8, 5],
-                                 [3, 7, 2, 2, 7, 5, 3, 1, 9]])
+    pydoku.raw_board = np.array(TEST_BOARD)
     return pydoku
 
 
-def test_get_unavailable_for_col(pydoku):
-    assert pydoku.get_unavailable_for_col(3, 4) == 1
-    assert pydoku.get_unavailable_for_col(3, 5) == 1
-    assert pydoku.get_unavailable_for_col(6, 7) == 1
-    assert pydoku.get_unavailable_for_col(6, 8) == 1
-    assert pydoku.get_unavailable_for_col(4, 5) == 2
-    assert pydoku.get_unavailable_for_col(7, 8) == 2
-    assert pydoku.get_unavailable_for_col(0, 0) == 0
-    assert pydoku.get_unavailable_for_col(2, 1) == 0
+@pytest.mark.parametrize(
+    ('x', 'y', 'expected'),
+    (
+        (3, 4, 1),
+        (3, 5, 1),
+        (6, 7, 1),
+        (6, 8, 1),
+        (4, 5, 2),
+        (7, 8, 2),
+        (0, 0, 0),
+        (2, 1, 0)
+    )
+)
+def test_get_unavailable_for_col(pydoku, x, y, expected):
+    assert pydoku.get_unavailable_for_col(x, y) == expected
 
 
-def test_get_unavailable_for_row(pydoku):
-    assert pydoku.get_unavailable_for_row(4, 4) == 1
-    assert pydoku.get_unavailable_for_row(5, 4) == 1
-    assert pydoku.get_unavailable_for_row(7, 7) == 1
-    assert pydoku.get_unavailable_for_row(8, 7) == 1
-    assert pydoku.get_unavailable_for_row(0, 0) == 0
-    assert pydoku.get_unavailable_for_row(1, 3) == 0
+@pytest.mark.parametrize(
+    ('x', 'y', 'expected'),
+    (
+        (4, 4, 1),
+        (5, 4, 1),
+        (7, 7, 1),
+        (8, 7, 1),
+        (0, 0, 0),
+        (1, 3, 0)
+    )
+)
+def test_get_unavailable_for_row(pydoku, x, y, expected):
+    assert pydoku.get_unavailable_for_row(x, y) == expected
 
 
-def test_get_col_available_numbers(pydoku):
+@pytest.mark.parametrize(
+    ('coords', 'current_number', 'expected'),
+    (
+        ((4, 3), 5, np.array([[1, 3], [4, 9], [7, 8]])),
+        ((5, 3), 2, np.array([[1, 3], [4, 9], [7, 8]])),
+        ((4, 4), 4, np.array([[3], [9], [8]]))
+    )
+)
+def test_get_col_available_numbers(pydoku, coords, current_number, expected):
     assert np.array_equal(pydoku.get_col_available_numbers(
-        (4, 3), 5), np.array([[1, 3], [4, 9], [7, 8]]))
-    assert np.array_equal(pydoku.get_col_available_numbers(
-        (5, 3), 2), np.array([[1, 3], [4, 9], [7, 8]]))
-    assert np.array_equal(pydoku.get_col_available_numbers(
-        (4, 4), 4), np.array([[3], [9], [8]]))
+        coords, current_number), expected)
 
 
-def test_get_row_available_numbers(pydoku):
+@pytest.mark.parametrize(
+    ('coords', 'current_number', 'expected'),
+    (
+        ((5, 0), 4, np.array([[5, 8, 9], [7, 6, 3]])),
+        ((3, 3), 5, np.array([[6, 4, 9], [2, 7, 8]])),
+        ((6, 6), 2, np.array([[7, 8, 5], [3, 1, 9]]))
+    )
+)
+def test_get_row_available_numbers(pydoku, coords, current_number, expected):
     assert np.array_equal(pydoku.get_row_available_numbers(
-        (5, 0), 4), np.array([[5, 8, 9], [7, 6, 3]]))
-    assert np.array_equal(pydoku.get_row_available_numbers(
-        (3, 3), 5), np.array([[6, 4, 9], [2, 7, 8]]))
-    assert np.array_equal(pydoku.get_row_available_numbers(
-        (6, 6), 2), np.array([[7, 8, 5], [3, 1, 9]]))
+        coords, current_number), expected)
 
 
-def test_get_previous_in_col(pydoku):
-    assert np.array_equal(pydoku.get_previous_in_col(
-        (0, 5)), np.array([2, 4, 5, 8, 7]))
-    assert np.array_equal(pydoku.get_previous_in_col(
-        (5, 3)), np.array([4, 9, 3]))
-    assert np.array_equal(pydoku.get_previous_in_col((4, 6)),
-                          np.array([2, 8, 6, 1, 4, 7]))
+@pytest.mark.parametrize(
+    ('coords', 'expected'),
+    (
+        ((0, 5), np.array([2, 4, 5, 8, 7])),
+        ((5, 3), np.array([4, 9, 3])),
+        ((4, 6), np.array([2, 8, 6, 1, 4, 7]))
+    )
+)
+def test_get_previous_in_col(pydoku, coords, expected):
+    assert np.array_equal(pydoku.get_previous_in_col(coords), expected)
 
 
-def test_get_previous_in_row(pydoku):
-    assert np.array_equal(pydoku.get_previous_in_row((1, 5)), np.array([1]))
-    assert np.array_equal(pydoku.get_previous_in_row((6, 2)),
-                          np.array([5, 8, 7, 7, 6, 3]))
-    assert np.array_equal(pydoku.get_previous_in_row(
-        (4, 7)), np.array([9, 6, 5, 3]))
+@pytest.mark.parametrize(
+    ('coords', 'expected'),
+    (
+        ((1, 5), np.array([1])),
+        ((6, 2), np.array([5, 8, 7, 7, 6, 3])),
+        ((4, 7), np.array([9, 6, 5, 3]))
+    )
+)
+def test_get_previous_in_row(pydoku, coords, expected):
+    assert np.array_equal(pydoku.get_previous_in_row(coords), expected)
 
 
-def test_find_sector(pydoku):
-    assert np.array_equal(pydoku.find_sector((5, 3)), np.array(
-        [[5, 1, 3], [6, 4, 9], [2, 7, 8]]))
-    assert np.array_equal(pydoku.find_sector((5, 3)), np.array(
-        [[5, 1, 3], [6, 4, 9], [2, 7, 8]]))
-    assert np.array_equal(pydoku.find_sector((1, 5)), np.array(
-        [[8, 5, 6], [7, 3, 4], [1, 9, 2]]))
-    assert np.array_equal(pydoku.find_sector((4, 7)), np.array(
-        [[9, 1, 6], [3, 8, 4], [2, 7, 5]]))
+@pytest.mark.parametrize(
+    ('coords', 'expected'),
+    (
+        ((5, 3), np.array([[5, 1, 3], [6, 4, 9], [2, 7, 8]])),
+        ((1, 5), np.array([[8, 5, 6], [7, 3, 4], [1, 9, 2]])),
+        ((4, 7), np.array([[9, 1, 6], [3, 8, 4], [2, 7, 5]]))
+    )
+)
+def test_find_sector(pydoku, coords, expected):
+    assert np.array_equal(pydoku.find_sector(coords), expected)
 
 
-def test_find_sector_border(pydoku):
-    assert pydoku.find_sector_borders((0, 5)) == (3, 6, 0, 3)
-    assert pydoku.find_sector_borders((4, 6)) == (6, 9, 3, 6)
-    assert pydoku.find_sector_borders((6, 2)) == (0, 3, 6, 9)
+@pytest.mark.parametrize(
+    ('coords', 'expected'),
+    (
+        ((0, 5), (3, 6, 0, 3)),
+        ((4, 6), (6, 9, 3, 6)),
+        ((6, 2), (0, 3, 6, 9))
+    )
+)
+def test_find_sector_border(pydoku, coords, expected):
+    assert pydoku.find_sector_borders(coords) == expected
 
 
 def test_populate_board(pydoku):
