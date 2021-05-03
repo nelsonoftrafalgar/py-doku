@@ -1,7 +1,7 @@
 import pytest
 import numpy as np
 from py_doku.src.generator import Generator
-from py_doku.src import TEST_BOARD
+from tests import TEST_BOARD
 
 
 @pytest.fixture
