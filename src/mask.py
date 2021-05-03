@@ -1,14 +1,12 @@
 from random import random
 import numpy as np
-from generator import Generator
+from py_doku.src.generator import Generator
 
 
 class Mask:
     def __init__(self):
         generator = Generator()
         self.valid_board = generator.generate_valid_board()
-        print(self.valid_board)
-        print(self.mask_board(0.2))
 
     def mask_board(self, level):
         masked_board = []
