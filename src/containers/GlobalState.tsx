@@ -2,7 +2,7 @@ import { ActionType, SectorValues } from '../model'
 import { useEffect, useMemo, useReducer } from 'react'
 
 import { GameContext } from '../state/context'
-import axios from 'axios'
+import { http } from '../helpers/http'
 import { mapBoradToSectors } from '../services/Generator'
 import { reducer } from '../state/reducers'
 
@@ -24,7 +24,7 @@ const GlobalState: React.FC<IProps> = ({ render }) => {
 
 	useEffect(() => {
 		state.level &&
-			axios
+			http
 				.get('/api', { params: { level: state.level } })
 				.then((res) => {
 					dispatch({ type: ActionType.SET_BOARD, payload: { data: res.data } })
